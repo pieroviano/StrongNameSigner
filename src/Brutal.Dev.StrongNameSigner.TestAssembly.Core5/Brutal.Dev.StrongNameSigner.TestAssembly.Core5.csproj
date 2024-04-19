@@ -3,4 +3,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Net4x.NunitTests" Version="$(Net4xMsTestsVersion).$(VersionBuildSuffix)" />
+  </ItemGroup>
 </Project>

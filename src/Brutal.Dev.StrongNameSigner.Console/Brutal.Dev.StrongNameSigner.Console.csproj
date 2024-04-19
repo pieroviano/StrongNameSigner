@@ -1,21 +1,36 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{81AD5094-FAD3-40BC-A0AB-1B6F0B90AD5A}</ProjectGuid>
+    <PackageId>Net4x.StrongNameSigner.Console</PackageId>
+    <Version>3.2.1</Version>
+    <Title>.NET Assembly Strong-Name Signer</Title>
+    <Authors>Werner van Deventer</Authors>
+    <Owners>Werner van Deventer</Owners>
+    <LicenseUrl>https://github.com/brutaldev/StrongNameSigner#license</LicenseUrl>
+    <ProjectUrl>https://github.com/brutaldev/StrongNameSigner</ProjectUrl>
+    <IconUrl>https://raw.githubusercontent.com/brutaldev/StrongNameSigner/master/src/Brutal.Dev.StrongNameSigner.UI/Icon.ico</IconUrl>
+    <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+    <Description>
+      Automatic strong-name signing of referenced assemblies.
+
+      Utility software to strong-name sign .NET assemblies, including assemblies you do not have the source code for.
+
+      If you strong-name sign your own projects you may have noticed that if you reference an unsigned third party assembly you get an error similar to "Referenced assembly 'A.B.C' does not have a strong name". If you did not create this assembly, you can use this tool to sign the assembly with your own (or temporarily generated) strong-name key.
+
+      The tool will also re-write the assembly references (as well as any InternalsVisibleTo references) to match the new signed versions of the assemblies you create.
+    </Description>
+    <Summary>Automatic strong-name signing of referenced assemblies. Utility software to strong-name sign .NET assemblies, including assemblies you do not have the source code for.</Summary>
+    <ReleaseNotes>
+      - Prevent locking issues with friend references being written after their referencing assemlies.
+      - No longer remove friend references for assemblies not included in the signing list.
+      - Mior optimizations.
+    </ReleaseNotes>
+    <Copyright>Werner van Deventer (https://brutaldev.com)</Copyright>
+    <Language>en-US</Language>
+    <Tags>strongname assembly gac unsigned strong name automatic</Tags>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Brutal.Dev.StrongNameSigner.Console</RootNamespace>
     <AssemblyName>StrongNameSigner.Console</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,27 +46,14 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <AssemblyTitle>.NET Assembly Strong-Name Signer Console</AssemblyTitle>
+    <Company>https://brutaldev.com</Company>
+    <Product>Brutal.Dev.StrongNameSigner.Console</Product>
+    <Description>Console application to sign .NET assemblies with a strong-name key and fix assembly references.</Description>
+    <Copyright>Copyright © 2013-2022</Copyright>
+    <AssemblyVersion>3.2.1.0</AssemblyVersion>
+    <FileVersion>3.2.1.0</FileVersion>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
@@ -64,75 +66,26 @@
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PackageId>Net4x.StrongNameSigner</PackageId>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <ItemGroup>
-    <Reference Include="Mono.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Mono.Cecil.0.11.4\lib\net40\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Mdb, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Mono.Cecil.0.11.4\lib\net40\Mono.Cecil.Mdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Pdb, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Mono.Cecil.0.11.4\lib\net40\Mono.Cecil.Pdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Rocks, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Mono.Cecil.0.11.4\lib\net40\Mono.Cecil.Rocks.dll</HintPath>
-    </Reference>
-    <Reference Include="PowerArgs, Version=2.6.0.1, Culture=neutral, PublicKeyToken=26a276264bbd55b8, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\PowerArgs.2.6.0.1\lib\net40\PowerArgs.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="NuGetUtility" Version="$(NuGetUtilityVersion)" PrivateAssets="All" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.4" />
+    <PackageReference Include="PowerArgs" Version="2.6.0.1" Condition="'$(TargetFramework)'=='net472'" />
+    <PackageReference Include="PowerArgs" Version="4.0.2" Condition="'$(TargetFramework)'=='net6.0'" />
+    <PackageReference Include="StyleCop.MSBuild" Version="6.2.0" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogLevel.cs" />
-    <Compile Include="Options.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Reference Include="System.Data.DataSetExtensions" Condition="'$(TargetFramework)'=='net472'" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <Content Include="..\Brutal.Dev.StrongNameSigner\StrongNameSigner.targets" Link="Net4x.StrongNameSigner.Console.targets" Pack="True" PackagePath="build" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Brutal.Dev.StrongNameSigner\Brutal.Dev.StrongNameSigner.csproj">
-      <Project>{947eecc6-5ebc-4d2a-bac4-8e88b5bafe84}</Project>
-      <Name>Brutal.Dev.StrongNameSigner</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Brutal.Dev.StrongNameSigner\Brutal.Dev.StrongNameSigner.csproj" PrivateAssets="all" IncludeAssets="all" />
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Import Project="..\..\packages\StyleCop.MSBuild.6.2.0\build\StyleCop.MSBuild.targets" Condition="Exists('..\..\packages\StyleCop.MSBuild.6.2.0\build\StyleCop.MSBuild.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\StyleCop.MSBuild.6.2.0\build\StyleCop.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\StyleCop.MSBuild.6.2.0\build\StyleCop.MSBuild.targets'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
